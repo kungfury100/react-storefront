@@ -21,14 +21,12 @@ function MaintainCategories() {
       .then(json => setCategories(json))
   }, [])
 
-  const deleteCategory = (id) => {
-    // categories.splice(index, 1)
-    // setCategories(categories.slice())
+  const deleteCategory = (id, index) => {
+    categories.splice(index, 1)
+    setCategories(categories.slice())
     fetch("https://69933cce8f29113acd406d64.mockapi.io/categories/" + id, {
       method: "DELETE"
     })
-      .then(res => res.json())
-      .then(json => setCategories(json))
   }
 
   return (
@@ -49,7 +47,7 @@ function MaintainCategories() {
             <TableRow key={category.id}>
               <TableCell className="whitespace-normal break-all">
                 <Button
-                  onClick={() => deleteCategory(category.id)}
+                  onClick={() => deleteCategory(category.id, index)}
                   size="icon"
                   variant="outline"
                   aria-label="Submit"
