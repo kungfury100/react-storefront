@@ -1,35 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Products from "../data/products.json"
 import { Button } from '@/components/ui/button'
 
 const PRODUCTS_STORAGE_KEY = "storefront-products"
 
-const getStoredProducts = () => {
-  const storedProducts = localStorage.getItem(PRODUCTS_STORAGE_KEY)
-  if (!storedProducts) {
-    return Products.slice()
-  }
-
-  try {
-    return JSON.parse(storedProducts)
-  } catch {
-    return Products.slice()
-  }
-}
-
 function Home() {
-  const [products, setProducts] = useState(getStoredProducts)
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+     fetch("https://69933cce8f29113acd406d64.mockapi.io/products")
+      .then(res => res.json())
+      .then(json => setProducts(json))
+  }, []);
 
   const addToCart = (product) => {
     const cartLS = JSON.parse(localStorage.getItem("cart")) || [];
     cartLS.push(product);
     localStorage.setItem("cart", JSON.stringify(cartLS));
-  }
-
-  const resetProducts = () => {
-    const resetList = Products.slice()
-    setProducts(resetList)
-    localStorage.setItem(PRODUCTS_STORAGE_KEY, JSON.stringify(resetList))
   }
 
   const calculateTotal = () => {
@@ -45,7 +32,7 @@ function Home() {
       {products.map((product, index) => 
         <div key={product.id} className="grid w-full grid-cols-[2rem_100px_minmax(0,1fr)_auto] items-center gap-4 py-8">
           <div className="text-right">{index + 1}.</div>
-          <img className="w-[100px]" src={product.image} alt={product.description} />
+          <img className="w-[100px] h-[100px] object-cover" src={product.image} alt={product.description} />
           <div className="min-w-0">
             <div>{product.title}</div> 
             <div>{product.price}€</div> 
@@ -58,7 +45,6 @@ function Home() {
 
       <div className="mt-6 flex items-center gap-4">
         <div>{products.length} items</div>
-        <Button variant="outline" onClick={resetProducts}>Reset</Button>
       </div>
 
       <div className="mt-2">Total: {calculateTotal()} €</div>
