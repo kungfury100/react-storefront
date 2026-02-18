@@ -8,10 +8,9 @@ import Product from './pages/Product';
 import Cart from './pages/Cart';
 import AdminHome from './pages/admin/AdminHome';
 import AddProduct from './pages/admin/AddProduct';
-import EditProduct from './pages/admin/EditProduct';
-import MaintainProducts from './pages/admin/MaintainProducts';
-import MaintainCategories from './pages/admin/MaintainCategories';
-import MaintainShops from './pages/admin/MaintainShops';
+import EditProducts from './pages/admin/EditProducts';
+import EditCategories from './pages/admin/EditCategories';
+import EditShops from './pages/admin/EditShops';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import NotFound from './pages/NotFound';
@@ -27,14 +26,13 @@ function App() {
           <Route path="contact" element={ <Contact/> } />
           <Route path="shops" element={ <Shops/>} />
           <Route path="cart" element={ <Cart/>} />
-          <Route path="product/:index" element={ <Product/>} />
+          <Route path="product/:id" element={ <Product/>} />
 
           <Route path="admin" element={ <AdminHome/>} />
           <Route path="admin/add-product" element={ <AddProduct/>} />
-          <Route path="admin/edit-product/:index" element={ <EditProduct/>} />
-          <Route path="admin/maintain-products" element={ <MaintainProducts/>} />
-          <Route path="admin/maintain-categories" element={ <MaintainCategories/>} />
-          <Route path="admin/maintain-shops" element={ <MaintainShops/>} />
+          <Route path="admin/edit-products" element={ <EditProducts/>} />
+          <Route path="admin/edit-categories" element={ <EditCategories/>} />
+          <Route path="admin/edit-shops" element={ <EditShops/>} />
 
           <Route path="login" element={ <Login/>} />
           <Route path="signup" element={ <SignUp/>} />

@@ -44,40 +44,43 @@ function Cart() {
 
   const Sum = () => {
     let sum = 0
-    cart.forEach(product => sum = sum + product.price)
-    return sum;
+    cart.forEach((product) => {
+      sum = sum + Number(product.price)
+    })
+    return sum.toFixed(2)
   }
 
 
   return (
-    <div>
-      {cart.length === 0 && <div>Cart is empty</div>}
+    <div className="flex flex-col gap-6 pt-4">
+      <h1 className="text-xl font-semibold">Cart</h1>
+      {cart.length === 0 && <div>No products have been added to the cart.</div>}
+
+      {cart.length > 0 &&
+        <div>
+          <div>Items in cart: {cart.length} pcs</div>
+          <div>Total amount to be paid: {Sum()}€</div>
+        </div>
+      }
       
       {cart.length > 0 &&
       <div>
         {cart.map((product, index) => 
           <div key={index} className="grid w-full grid-cols-[2rem_100px_minmax(0,1fr)_auto] items-center gap-4 py-8">
             <div className="text-right">{index + 1}.</div>
-            <img className="w-[100px]" src={product.image} alt={product.description} />
+            <img className="w-[100px] h-[100px] object-cover" src={product.image} alt={product.description} />
             <div className="min-w-0"> 
               <div>{product.title}</div>
               <div>{product.price}€</div>
             </div>
             <div className="justify-self-end">
-              <Button onClick={() => deleteProduct(index)} size="icon" aria-label="Submit">
+              <Button onClick={() => deleteProduct(index)} size="icon" variant="outline" aria-label="Submit">
                 <X />
               </Button>
             </div>
           </div>
         )}
         <br />
-       
-        {cart.length > 0 &&
-        <>
-          <div>Quantity: {cart.length} pcs</div>
-          <div>Total: {Sum()}€</div>
-        </>
-        }
       </div>
       }
     </div>

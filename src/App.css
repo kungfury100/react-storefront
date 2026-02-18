@@ -4,6 +4,12 @@
   text-align: left;
 }
 
+@layer base {
+  button, [role="button"] {
+    cursor: pointer;
+  }
+}
+
 .layout-shell {
   width: 100%;
   max-width: 1280px;
