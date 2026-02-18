@@ -1,40 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { X } from 'lucide-react';
-
-const CART_STORAGE_KEY = "cart"
-const PRODUCTS_STORAGE_KEY = "storefront-products"
-
-const getStoredProducts = () => {
-  const storedProducts = localStorage.getItem(PRODUCTS_STORAGE_KEY)
-  if (!storedProducts) {
-    return []
-  }
-
-  try {
-    return JSON.parse(storedProducts)
-  } catch {
-    return []
-  }
-}
-
-const getSyncedCart = () => {
-  const cart = JSON.parse(localStorage.getItem(CART_STORAGE_KEY)) || []
-  const products = getStoredProducts()
-
-  if (products.length === 0) {
-    return cart
-  }
-
-  const productIds = new Set(products.map((product) => product.id))
-  return cart.filter((cartProduct) => productIds.has(cartProduct.id))
-}
+import { MinusIcon, PlusIcon, X } from 'lucide-react';
+import { getStoredProducts } from './util/cart';
 
 function Cart() {
-  const [cart, setCart] = useState(getSyncedCart);
+  const [cart, setCart] = useState(getStoredProducts);
 
   useEffect(() => {
-    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart))
+    localStorage.setItem("cart", JSON.stringify(cart))
   }, [cart])
 
   const deleteProduct = (index) => {
@@ -42,10 +15,23 @@ function Cart() {
     setCart(cart.slice());
   }
 
-  const Sum = () => {
+  const decreaseQuantity = (index) => {
+    cart[index].quantity--;
+    if  (cart[index].quantity === 0) {
+      deleteProduct(index);
+    }
+    setCart(cart.slice());
+  }
+
+  const increaseQuantity = (index) => {
+    cart[index].quantity++;
+    setCart(cart.slice());
+  }
+
+  const sum = () => {
     let sum = 0
-    cart.forEach((product) => {
-      sum = sum + Number(product.price)
+    cart.forEach((cartProduct) => {
+      sum = sum + Number(cartProduct.product.price) * cartProduct.quantity
     })
     return sum.toFixed(2)
   }
@@ -57,21 +43,39 @@ function Cart() {
       {cart.length === 0 && <div>No products have been added to the cart.</div>}
 
       {cart.length > 0 &&
-        <div>
-          <div>Items in cart: {cart.length} pcs</div>
-          <div>Total amount to be paid: {Sum()}€</div>
+        <div className="flex justify-between">
+          <div>
+            <div>Unique items in cart: {cart.length} pcs</div>
+            <div>Total amount to be paid: {sum()}€</div>
+          </div>
+          <div>
+            <Button variant="secondary" onClick={() => setCart([])}>Tühjenda ostukorv</Button>
+          </div>
         </div>
       }
       
       {cart.length > 0 &&
       <div>
-        {cart.map((product, index) => 
+        {cart.map((cp, index) => 
           <div key={index} className="grid w-full grid-cols-[2rem_100px_minmax(0,1fr)_auto] items-center gap-4 py-8">
             <div className="text-right">{index + 1}.</div>
-            <img className="w-[100px] h-[100px] object-cover" src={product.image} alt={product.description} />
+            <img className="w-[100px] h-[100px] object-cover" src={cp.product.image} alt={cp.product.description} />
             <div className="min-w-0"> 
-              <div>{product.title}</div>
-              <div>{product.price}€</div>
+              <div>{cp.product.title}</div>
+              <div>{cp.product.price}€</div>
+              <div className="flex flex-row gap-4">
+                <Button size="icon" variant="outline"
+                  onClick={() => decreaseQuantity(index)}
+                >
+                  <MinusIcon />
+                </Button>
+                <Button size="icon" variant="outline"
+                  onClick={() => increaseQuantity(index)}
+                >
+                  <PlusIcon />
+                </Button>
+              </div>
+              <div>{cp.quantity}</div>
             </div>
             <div className="justify-self-end">
               <Button onClick={() => deleteProduct(index)} size="icon" variant="outline" aria-label="Submit">
@@ -83,6 +87,8 @@ function Cart() {
         <br />
       </div>
       }
+    
+      
     </div>
   )
 }

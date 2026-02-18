@@ -70,17 +70,17 @@ export default function Navbar() {
                   </li>
                   <li>
                     <NavigationMenuLink asChild>
-                      <Link to="/admin/edit-products">Edit products</Link>
+                      <Link to="/admin/manage-products">Edit products</Link>
                     </NavigationMenuLink>
                   </li>
                   <li>
                     <NavigationMenuLink asChild>
-                      <Link to="/admin/edit-categories">Edit categories</Link>
+                      <Link to="/admin/manage-categories">Edit categories</Link>
                     </NavigationMenuLink>
                   </li>
                   <li>
                     <NavigationMenuLink asChild>
-                      <Link to="/admin/edit-shops">Edit shops</Link>
+                      <Link to="/admin/manage-shops">Edit shops</Link>
                     </NavigationMenuLink>
                   </li>
                 </ul>

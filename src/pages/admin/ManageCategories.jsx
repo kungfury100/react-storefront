@@ -1,6 +1,6 @@
+import AddCategory from '@/components/AddCategory'
 import React, { useEffect, useState } from 'react'
 import { X } from "lucide-react"
-
 import {
   Table,
   TableBody,
@@ -9,14 +9,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-
 import { Button } from '@/components/ui/button'
 
-function EditCategories() {
+function ManageCategories() {
   const [categories, setCategories] = useState([])
 
   useEffect(() => {
-    fetch("https://69933cce8f29113acd406d64.mockapi.io/categories")
+    fetch(import.meta.env.VITE_DB_URL + "/categories")
       .then(res => res.json())
       .then(json => setCategories(json))
   }, [])
@@ -24,7 +23,7 @@ function EditCategories() {
   const deleteCategory = (id, index) => {
     categories.splice(index, 1)
     setCategories(categories.slice())
-    fetch("https://69933cce8f29113acd406d64.mockapi.io/categories/" + id, {
+    fetch(import.meta.env.VITE_DB_URL + "/categories/" + id, {
       method: "DELETE"
     })
   }
@@ -32,6 +31,7 @@ function EditCategories() {
   return (
     <div className="flex flex-col gap-6 pt-4">
       <h1 className="text-xl font-semibold">Edit categories</h1>
+      <AddCategory updateCategories={setCategories}/>
       <div className="overflow-hidden rounded-md border">
         <Table>
           <TableHeader>
@@ -60,7 +60,9 @@ function EditCategories() {
                 <TableCell className="whitespace-normal break-words">
                   {category.name}
                 </TableCell>
-                <TableCell>{category.image}</TableCell>
+                <TableCell>
+                  <img className="w-[100px] h-[100px] object-cover" src={category.avatar} alt={category.name} />
+                </TableCell>
                 <TableCell className="whitespace-normal break-words">
                   {category.createdAt}
                 </TableCell>
@@ -69,9 +71,9 @@ function EditCategories() {
           </TableBody>
         </Table>
       </div>
-    </div>
 
+    </div>
   )
 }
 
-export default EditCategories
+export default ManageCategories

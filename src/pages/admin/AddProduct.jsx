@@ -14,8 +14,8 @@ import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
 import { Check } from "lucide-react"
 
-const PRODUCTS_API_URL = "https://69933cce8f29113acd406d64.mockapi.io/products"
-const CATEGORIES_API_URL = "https://69933cce8f29113acd406d64.mockapi.io/categories"
+const PRODUCTS_API_URL = import.meta.env.VITE_DB_URL + "/products"
+const CATEGORIES_API_URL = import.meta.env.VITE_DB_URL + "/categories"
 
 const INITIAL_PRODUCT = {
   title: "",
@@ -135,7 +135,7 @@ function AddProduct() {
             })
           }}
         >
-          Add Product
+          Add product
         </Button>
       </form>
       <Toaster position="top-center" />

@@ -9,11 +9,12 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, Star } from "lucide-react"
+import { Slider } from "@/components/ui/slider"
 
-const PRODUCTS_API_URL = "https://69933cce8f29113acd406d64.mockapi.io/products"
+const PRODUCTS_API_URL = import.meta.env.VITE_DB_URL + "/products"
 
-function Product() {
+function ProductDetails() {
   const { id } = useParams()
   const [product, setProduct] = useState(null)
   const [isLoaded, setIsLoaded] = useState(false)
@@ -44,6 +45,7 @@ function Product() {
             <TableHead>Title</TableHead>
             <TableHead>Category</TableHead>
             <TableHead>Price</TableHead>
+            <TableHead>Rating (Count)</TableHead>
             <TableHead>Active</TableHead>
             <TableHead>Description</TableHead>
           </TableRow>
@@ -69,6 +71,16 @@ function Product() {
             <TableCell className="whitespace-normal break-words">
               {product.price}€
             </TableCell>
+            <TableCell className="whitespace-normal break-words">
+              <Star className="h-4 w-4 text-primary" strokeWidth={2.25} />
+              {product.rating} ({product.count})
+              <Slider
+                defaultValue={[75]}
+                max={100}
+                step={1}
+                className="mx-auto w-full max-w-xs"
+              />
+            </TableCell>
             <TableCell>
               {String(product.active)}
             </TableCell>
@@ -78,6 +90,11 @@ function Product() {
           </TableRow>
         </TableBody>
       </Table>
+      // Võimalda tootele rating anda
+      // Võimalda toote kogu ratingu arvu
+      // toote rating = keskmine rating / arvuga -- uus rating
+      // uuesti rating arvutada
+      // kogu arvule +1
       <Button asChild className="w-fit">
         <Link to="/"><ArrowLeft />Back home</Link>
       </Button>
@@ -85,4 +102,4 @@ function Product() {
   )
 }
 
-export default Product
+export default ProductDetails

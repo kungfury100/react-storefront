@@ -10,10 +10,10 @@ import {
 } from "@/components/ui/table"
 import { Button } from '@/components/ui/button'
 
-const PRODUCTS_API_URL = "https://69933cce8f29113acd406d64.mockapi.io/products"
+const PRODUCTS_API_URL = import.meta.env.VITE_DB_URL + "/products"
 const CART_STORAGE_KEY = "cart"
 
-function EditProducts() {
+function ManageProducts() {
   
   const [products, setProducts] = useState([])
 
@@ -49,7 +49,7 @@ function EditProducts() {
               <TableHead>Title</TableHead>
               <TableHead>Price</TableHead>
               <TableHead>Category</TableHead>
-              <TableHead>Rating</TableHead>
+              <TableHead>Rating (count)</TableHead>
               <TableHead>Image</TableHead>
             </TableRow>
           </TableHeader>
@@ -67,9 +67,8 @@ function EditProducts() {
                 <TableCell className="whitespace-normal break-words">{product.category}</TableCell>
                 <TableCell>
                   <div className="inline-flex items-center gap-1 whitespace-nowrap">
-                    {product.rating?.rate ?? product.rating}
                     <Star className="h-4 w-4 text-primary" strokeWidth={2.25} />
-                    ({product.rating?.count ?? product.count ?? 0})
+                    {product.rating} ({product.count})
                   </div>
                 </TableCell>
                 <TableCell className="whitespace-normal break-all">{product.image}</TableCell>
@@ -82,4 +81,4 @@ function EditProducts() {
   )
 }
 
-export default EditProducts
+export default ManageProducts
