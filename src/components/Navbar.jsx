@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   NavigationMenu,
@@ -11,6 +12,33 @@ import {
 
 
 export default function Navbar() {
+  const [cartCount, setCartCount] = useState(0)
+
+  const getCartCount = () => {
+    try {
+      const storedCart = JSON.parse(localStorage.getItem("cart")) || []
+      return storedCart.reduce((sum, cartProduct) => {
+        const quantity = Number(cartProduct?.quantity ?? 1)
+        return sum + (Number.isFinite(quantity) ? quantity : 0)
+      }, 0)
+    } catch {
+      return 0
+    }
+  }
+
+  useEffect(() => {
+    const syncCartCount = () => setCartCount(getCartCount())
+
+    syncCartCount()
+    window.addEventListener("storage", syncCartCount)
+    const interval = window.setInterval(syncCartCount, 500)
+
+    return () => {
+      window.removeEventListener("storage", syncCartCount)
+      window.clearInterval(interval)
+    }
+  }, [])
+
   return (
     <div className="bg-background border-b relative z-50">
       <div className="layout-shell py-2 flex items-center justify-between">
@@ -43,7 +71,7 @@ export default function Navbar() {
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
               <Link to="/cart" className={navigationMenuTriggerStyle()}>
-                Cart
+                Cart ({cartCount})
               </Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
@@ -65,22 +93,17 @@ export default function Navbar() {
                   </li>
                   <li>
                     <NavigationMenuLink asChild>
-                      <Link to="/admin/add-product">Add product</Link>
+                      <Link to="/admin/manage-products">Manage products</Link>
                     </NavigationMenuLink>
                   </li>
                   <li>
                     <NavigationMenuLink asChild>
-                      <Link to="/admin/manage-products">Edit products</Link>
+                      <Link to="/admin/manage-categories">Manage categories</Link>
                     </NavigationMenuLink>
                   </li>
                   <li>
                     <NavigationMenuLink asChild>
-                      <Link to="/admin/manage-categories">Edit categories</Link>
-                    </NavigationMenuLink>
-                  </li>
-                  <li>
-                    <NavigationMenuLink asChild>
-                      <Link to="/admin/manage-shops">Edit shops</Link>
+                      <Link to="/admin/manage-shops">Manage shops</Link>
                     </NavigationMenuLink>
                   </li>
                 </ul>

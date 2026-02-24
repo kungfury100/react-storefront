@@ -9,8 +9,19 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, Star } from "lucide-react"
+import { Check, ShoppingBag } from "lucide-react"
 import { Slider } from "@/components/ui/slider"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import { getStoredProducts } from '@/pages/util/cart'
+import { toast } from "sonner"
+import { Toaster } from "@/components/ui/sonner"
 
 const PRODUCTS_API_URL = import.meta.env.VITE_DB_URL + "/products"
 
@@ -34,70 +45,96 @@ function ProductDetails() {
     return null
   }
 
+  const addToCart = (clickedProduct) => {
+    const cartLS = getStoredProducts(); // ostukorvis oleva toote ID     klikitud toote ID
+    const found = cartLS.find(cartProduct => cartProduct.product.id === clickedProduct.id);
+    if (found) {
+        found.quantity++;
+    } else {
+      cartLS.push({product: clickedProduct, quantity: 1});
+    }
+    localStorage.setItem("cart", JSON.stringify(cartLS));
+  }
+
   return (
     <div className="flex flex-col gap-4 pt-4">
-      <h1 className="text-xl font-semibold">{product.title}</h1>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>ID</TableHead>
-            <TableHead>Image</TableHead>
-            <TableHead>Title</TableHead>
-            <TableHead>Category</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead>Rating (Count)</TableHead>
-            <TableHead>Active</TableHead>
-            <TableHead>Description</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableCell className="whitespace-normal break-all">
-              {product.id}
-            </TableCell>
-            <TableCell>
-              <img
-                className="w-[240px] h-[240px] object-cover"
-                src={product.image}
-                alt={product.description}
-              />
-            </TableCell>
-            <TableCell className="whitespace-normal break-words">
-              {product.title}
-            </TableCell>
-            <TableCell>
-              {product.category}
-            </TableCell>
-            <TableCell className="whitespace-normal break-words">
-              {product.price}€
-            </TableCell>
-            <TableCell className="whitespace-normal break-words">
-              <Star className="h-4 w-4 text-primary" strokeWidth={2.25} />
-              {product.rating} ({product.count})
-              <Slider
-                defaultValue={[75]}
-                max={100}
-                step={1}
-                className="mx-auto w-full max-w-xs"
-              />
-            </TableCell>
-            <TableCell>
-              {String(product.active)}
-            </TableCell>
-            <TableCell className="whitespace-normal break-all">
-              {product.description}
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-      // Võimalda tootele rating anda
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>{product.title}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <h1 className="text-2xl font-semibold">{product.title}</h1>
+      <div>
+        <img
+          className="w-[180px] h-[180px] object-cover"
+          src={product.image}
+          alt={product.description}
+        />
+        <div>
+          <div className="w-[180px]">
+            Give your score
+            <Slider defaultValue={[33]} max={100} step={1} />
+          </div>
+        </div>
+      </div>
+      <div className="overflow-hidden rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Price</TableHead>
+              <TableHead>Score</TableHead>
+              <TableHead>SKU</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableCell className="whitespace-normal break-words">
+                {product.price}€
+              </TableCell>
+              <TableCell className="whitespace-normal break-words">
+                {product.rating}% ({product.count})
+              </TableCell>
+              <TableCell className="align-top">
+                {product.id}
+              </TableCell>
+              <TableCell className="whitespace-normal break-all">
+                {product.description}
+              </TableCell>
+              <TableCell className="whitespace-normal break-all">
+                <Button
+                  onClick={() => {
+                    addToCart(product)
+                    toast("Product has been added to the cart.", {
+                      icon: <Check className="h-4 w-4" />,
+                    })
+                  }}
+                >
+                  <ShoppingBag /> Add to cart
+                </Button>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </div>
+      
+     
+
+
+      
+      {/* // Võimalda tootele rating anda
       // Võimalda toote kogu ratingu arvu
       // toote rating = keskmine rating / arvuga -- uus rating
       // uuesti rating arvutada
-      // kogu arvule +1
-      <Button asChild className="w-fit">
-        <Link to="/"><ArrowLeft />Back home</Link>
-      </Button>
+      // kogu arvule +1 */}
+      <Toaster position="top-center" />
     </div>
   )
 }

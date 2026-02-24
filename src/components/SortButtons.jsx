@@ -26,6 +26,12 @@ function SortButtons(props) {
       )
     }
 
+    const resetSorting = () => {
+      props.setProducts((previousProducts) =>
+        previousProducts.slice().sort((a, b) => Number(a.id) - Number(b.id))
+      )
+    }
+
   return (
     
     <div className="flex flex-wrap gap-2">
@@ -33,6 +39,8 @@ function SortButtons(props) {
       <Button onClick={sortZA} variant="outline">Z-A</Button>
       <Button onClick={sortPriceIncreasing} variant="outline">Price <ArrowUp /></Button>
       <Button onClick={sortPriceDecreasing} variant="outline">Price <ArrowDown /></Button>
+      <Button onClick={resetSorting} variant="outline">Reset sorting</Button>
+      
     </div>
   )
 }

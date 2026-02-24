@@ -2,6 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { MinusIcon, PlusIcon, X } from 'lucide-react';
 import { getStoredProducts } from './util/cart';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 
 function Cart() {
   const [cart, setCart] = useState(getStoredProducts);
@@ -11,21 +19,30 @@ function Cart() {
   }, [cart])
 
   const deleteProduct = (index) => {
-    cart.splice(index,1);
-    setCart(cart.slice());
+    setCart((previousCart) => previousCart.filter((_, i) => i !== index))
   }
 
   const decreaseQuantity = (index) => {
-    cart[index].quantity--;
-    if  (cart[index].quantity === 0) {
-      deleteProduct(index);
-    }
-    setCart(cart.slice());
+    setCart((previousCart) => {
+      const item = previousCart[index]
+      if (!item) return previousCart
+
+      if ((item.quantity ?? 0) <= 1) {
+        return previousCart.filter((_, i) => i !== index)
+      }
+
+      return previousCart.map((cartProduct, i) =>
+        i === index ? { ...cartProduct, quantity: (cartProduct.quantity ?? 0) - 1 } : cartProduct
+      )
+    })
   }
 
   const increaseQuantity = (index) => {
-    cart[index].quantity++;
-    setCart(cart.slice());
+    setCart((previousCart) =>
+      previousCart.map((cartProduct, i) =>
+        i === index ? { ...cartProduct, quantity: (cartProduct.quantity ?? 0) + 1 } : cartProduct
+      )
+    )
   }
 
   const sum = () => {
@@ -39,7 +56,7 @@ function Cart() {
 
   return (
     <div className="flex flex-col gap-6 pt-4">
-      <h1 className="text-xl font-semibold">Cart</h1>
+      <h1 className="text-2xl font-semibold">Cart</h1>
       {cart.length === 0 && <div>No products have been added to the cart.</div>}
 
       {cart.length > 0 &&
@@ -49,42 +66,53 @@ function Cart() {
             <div>Total amount to be paid: {sum()}€</div>
           </div>
           <div>
-            <Button variant="secondary" onClick={() => setCart([])}>Tühjenda ostukorv</Button>
+            <Button variant="destructive" onClick={() => setCart([])}>Tühjenda ostukorv</Button>
           </div>
         </div>
       }
       
       {cart.length > 0 &&
-      <div>
-        {cart.map((cp, index) => 
-          <div key={index} className="grid w-full grid-cols-[2rem_100px_minmax(0,1fr)_auto] items-center gap-4 py-8">
-            <div className="text-right">{index + 1}.</div>
-            <img className="w-[100px] h-[100px] object-cover" src={cp.product.image} alt={cp.product.description} />
-            <div className="min-w-0"> 
-              <div>{cp.product.title}</div>
-              <div>{cp.product.price}€</div>
-              <div className="flex flex-row gap-4">
-                <Button size="icon" variant="outline"
-                  onClick={() => decreaseQuantity(index)}
-                >
-                  <MinusIcon />
-                </Button>
-                <Button size="icon" variant="outline"
-                  onClick={() => increaseQuantity(index)}
-                >
-                  <PlusIcon />
-                </Button>
-              </div>
-              <div>{cp.quantity}</div>
-            </div>
-            <div className="justify-self-end">
-              <Button onClick={() => deleteProduct(index)} size="icon" variant="outline" aria-label="Submit">
-                <X />
-              </Button>
-            </div>
-          </div>
-        )}
-        <br />
+      <div className="overflow-hidden rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Price</TableHead>
+              <TableHead>Quantity</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {cart.map((cp, index) => (
+              <TableRow key={index}>
+                <TableCell className="align-middle">
+                  <div className="flex flex-row items-center gap-4">
+                    <img className="w-[40px] h-[40px] object-cover" src={cp.product.image} alt={cp.product.description} />
+                    {cp.product.title}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div>{cp.product.price}€</div>
+                </TableCell>
+                <TableCell className="align-middle flex flex-row justify-between">
+                  <div className="flex flex-row items-center gap-2">
+                    <Button size="icon-xs" variant="outline" onClick={() => decreaseQuantity(index)}>
+                      <MinusIcon />
+                    </Button>
+                    {cp.quantity}
+                    <Button size="icon-xs" variant="outline" onClick={() => increaseQuantity(index)}>
+                      <PlusIcon />
+                    </Button>
+                  </div>
+                  <div>
+                    <Button onClick={() => deleteProduct(index)} size="icon" variant="outline" aria-label="Submit">
+                      <X />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
       }
     

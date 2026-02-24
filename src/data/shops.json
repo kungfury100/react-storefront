@@ -1,0 +1,29 @@
+[
+  {
+    "name": "Kristiine keskus",
+    "address": "Endla tn 45, 10615 Tallinn",
+    "coordinates": [59.427, 24.723],
+    "openingTimes": {
+      "mon-sat": "10:00-20:00",
+      "sun": "11:00-16:00"
+    }
+  },
+  {
+    "name": "Solaris keskus",
+    "address": "Estonia pst 9, 11314 Tallinn",
+    "coordinates": [59.433, 24.752],
+    "openingTimes": {
+      "mon-sat": "10:00-19:00",
+      "sun": "11:00-16:00"
+    }
+  },
+  {
+    "name": "Ülemiste keskus",
+    "address": "Suur-Sõjamäe tn 4, 11415 Tallinn",
+    "coordinates": [59.422, 24.793],
+    "openingTimes": {
+      "mon-sat": "09:00-19:00",
+      "sun": "11:00-15:00"
+    }
+  }
+]

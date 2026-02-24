@@ -20,14 +20,12 @@ function Home() {
 
   return (
     <div className="flex flex-col gap-6 pt-4">
-      <h1 className="text-xl font-semibold">React Storefront</h1>
+      <h1 className="text-2xl font-semibold">React Storefront</h1>
       <SortButtons setProducts={setProducts} />
       <CategoryDropdown dbProducts={allProducts} setProducts={setProducts}/>
       
       <div>{products.length} items currently in stock.</div>
-      {products.map((product, index) => 
-        <Product key={product.id} product={product} index={index}/>
-      )}
+      <Product products={products} />
       <Toaster position="top-center" />
     </div>
   )

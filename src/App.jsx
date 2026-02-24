@@ -7,7 +7,6 @@ import Shops from './pages/Shops';
 import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart';
 import AdminHome from './pages/admin/AdminHome';
-import AddProduct from './pages/admin/AddProduct';
 import ManageProducts from './pages/admin/ManageProducts';
 import ManageCategories from './pages/admin/ManageCategories';
 import ManageShops from './pages/admin/ManageShops';
@@ -29,7 +28,6 @@ function App() {
           <Route path="product/:id" element={ <ProductDetails/>} />
 
           <Route path="admin" element={ <AdminHome/>} />
-          <Route path="admin/add-product" element={ <AddProduct/>} />
           <Route path="admin/manage-products" element={ <ManageProducts/>} />
           <Route path="admin/manage-categories" element={ <ManageCategories/>} />
           <Route path="admin/manage-shops" element={ <ManageShops/>} />

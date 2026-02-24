@@ -46,7 +46,6 @@ function AddCategory(props) {
 
   return (
    <div className="flex flex-col gap-6">
-      <h2>Add category</h2>
       <form className="space-y-4">
         <div className="space-y-1">
           <label className="text-sm">Name</label>

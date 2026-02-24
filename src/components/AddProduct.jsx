@@ -25,7 +25,7 @@ const INITIAL_PRODUCT = {
   image: "",
 }
 
-function AddProduct() {
+function AddProduct(props) {
   const [product, setProduct] = useState(INITIAL_PRODUCT)
   const [categories, setCategories] = useState([])
 
@@ -59,29 +59,36 @@ function AddProduct() {
       body: JSON.stringify(payload),
     })
 
+    toast("Product has been added to the store.", {
+      icon: <Check className="h-4 w-4" />,
+    })
+
     setProduct(INITIAL_PRODUCT)
+
+    const res = await fetch(PRODUCTS_API_URL)
+    const json = await res.json()
+    props.updateProducts(json)
   }
 
   return (
-    <div className="flex flex-col gap-6 pt-4">
-      <h1 className="text-xl font-semibold">Add product</h1>
+    <div className="flex flex-col gap-6">
       <form className="space-y-4">
         <div className="space-y-1">
           <label className="text-sm">Title</label>
-          <Input 
-            required 
-            value={product.title} 
+          <Input
+            required
+            value={product.title}
             onChange={(event) => updateField("title", event.target.value)}
           />
         </div>
 
         <div className="space-y-1">
           <label className="text-sm">Price</label>
-          <Input 
+          <Input
             type="number"
             min="0"
             step="0.01"
-            required 
+            required
             value={product.price}
             onChange={(event) => updateField("price", event.target.value)}
           />
@@ -119,8 +126,8 @@ function AddProduct() {
 
         <div className="space-y-1">
           <label className="text-sm">Image URL</label>
-          <Input 
-            required 
+          <Input
+            required
             value={product.image}
             onChange={(event) => updateField("image", event.target.value)}
           />
@@ -128,12 +135,7 @@ function AddProduct() {
 
         <Button
           type="button"
-          onClick={async () => {
-            await submitProduct()
-            toast("Product has been added to the cart.", {
-              icon: <Check className="h-4 w-4" />,
-            })
-          }}
+          onClick={submitProduct}
         >
           Add product
         </Button>

@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from '@/components/ui/button'
+import AddProduct from '@/components/AddProduct'
 
 const PRODUCTS_API_URL = import.meta.env.VITE_DB_URL + "/products"
 const CART_STORAGE_KEY = "cart"
@@ -39,7 +40,9 @@ function ManageProducts() {
 
   return (
     <div className="flex flex-col gap-6 pt-4">
-      <h1 className="text-xl font-semibold">Edit products</h1>
+      <h1 className="text-2xl font-semibold">Manage products</h1>
+      <h2 className="text-lg font-semibold">Add a new product</h2>
+      <AddProduct updateProducts={setProducts}/>
       <div className="overflow-hidden rounded-md border">
         <Table>
           <TableHeader>

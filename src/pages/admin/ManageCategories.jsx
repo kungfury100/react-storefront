@@ -30,7 +30,8 @@ function ManageCategories() {
 
   return (
     <div className="flex flex-col gap-6 pt-4">
-      <h1 className="text-xl font-semibold">Edit categories</h1>
+      <h1 className="text-2xl font-semibold">Manage categories</h1>
+      <h2 className="text-lg font-semibold">Add a new category</h2>
       <AddCategory updateCategories={setCategories}/>
       <div className="overflow-hidden rounded-md border">
         <Table>
