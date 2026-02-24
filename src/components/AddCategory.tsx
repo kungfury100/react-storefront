@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState, type ChangeEvent } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from "@/components/ui/input"
 import { Toaster } from "@/components/ui/sonner"
@@ -8,13 +8,18 @@ import { Check } from "lucide-react"
 const CATEGORIES_API_URL = import.meta.env.VITE_DB_URL + "/categories"
 
 const INITIAL_CATEGORY = {
-  name: ""
+  name: "",
+  avatar: ""
 }
 
-function AddCategory(props) {
+interface AddCategoryInterface {
+  updateCategories: (category: {}) => void
+}
+
+function AddCategory(props: AddCategoryInterface) {
   const [category, setCategory] = useState(INITIAL_CATEGORY)
 
-  const updateField = (key, value) => {
+  const updateField = (key: string, value: string) => {
     setCategory((previousCategory) => ({
       ...previousCategory,
       [key]: value,
@@ -32,7 +37,7 @@ function AddCategory(props) {
     })
 
     toast("Category has been added to the store.", {
-      icon: <Check classname="h-4 w-4" />
+      icon: <Check className="h-4 w-4" />
     })
 
     setCategory(INITIAL_CATEGORY)
@@ -50,9 +55,11 @@ function AddCategory(props) {
         <div className="space-y-1">
           <label className="text-sm">Name</label>
           <Input 
+            className=""
+            type="text"
             required 
             value={category.name} 
-            onChange={(event) => updateField("name", event.target.value)}
+            onChange={(event: ChangeEvent<HTMLInputElement>) => updateField("name", event.target.value)}
           />
         </div>
         <div className="space-y-1">
@@ -60,7 +67,7 @@ function AddCategory(props) {
           <Input 
             required 
             value={category.avatar} 
-            onChange={(event) => updateField("avatar", event.target.value)}
+            onChange={(event: ChangeEvent<HTMLInputElement>) => updateField("avatar", event.target.value)}
           />
         </div>
 

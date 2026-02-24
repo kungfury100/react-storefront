@@ -26,12 +26,10 @@ function App() {
           <Route path="shops" element={ <Shops/>} />
           <Route path="cart" element={ <Cart/>} />
           <Route path="product/:id" element={ <ProductDetails/>} />
-
           <Route path="admin" element={ <AdminHome/>} />
           <Route path="admin/manage-products" element={ <ManageProducts/>} />
           <Route path="admin/manage-categories" element={ <ManageCategories/>} />
           <Route path="admin/manage-shops" element={ <ManageShops/>} />
-
           <Route path="login" element={ <Login/>} />
           <Route path="signup" element={ <SignUp/>} />
 

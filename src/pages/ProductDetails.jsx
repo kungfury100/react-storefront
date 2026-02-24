@@ -96,19 +96,19 @@ function ProductDetails() {
           </TableHeader>
           <TableBody>
             <TableRow>
-              <TableCell className="whitespace-normal break-words">
+              <TableCell>
                 {product.price}€
               </TableCell>
-              <TableCell className="whitespace-normal break-words">
+              <TableCell>
                 {product.rating}% ({product.count})
               </TableCell>
-              <TableCell className="align-top">
+              <TableCell>
                 {product.id}
               </TableCell>
-              <TableCell className="whitespace-normal break-all">
+              <TableCell>
                 {product.description}
               </TableCell>
-              <TableCell className="whitespace-normal break-all">
+              <TableCell>
                 <Button
                   onClick={() => {
                     addToCart(product)
