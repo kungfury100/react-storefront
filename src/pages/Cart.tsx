@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { MinusIcon, PlusIcon, X } from 'lucide-react';
-import { getStoredProducts } from './util/cart';
+import { getStoredCart } from './util/cart';
 import {
   Table,
   TableBody,
@@ -10,19 +10,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import type { CartProduct } from '@/models/CartProduct';
 
 function Cart() {
-  const [cart, setCart] = useState(getStoredProducts);
+  const [cart, setCart] = useState<CartProduct[]>(getStoredCart);
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart))
   }, [cart])
 
-  const deleteProduct = (index) => {
+  const deleteProduct = (index: number) => {
     setCart((previousCart) => previousCart.filter((_, i) => i !== index))
   }
 
-  const decreaseQuantity = (index) => {
+  const decreaseQuantity = (index: number) => {
     setCart((previousCart) => {
       const item = previousCart[index]
       if (!item) return previousCart
@@ -37,7 +38,7 @@ function Cart() {
     })
   }
 
-  const increaseQuantity = (index) => {
+  const increaseQuantity = (index: number) => {
     setCart((previousCart) =>
       previousCart.map((cartProduct, i) =>
         i === index ? { ...cartProduct, quantity: (cartProduct.quantity ?? 0) + 1 } : cartProduct

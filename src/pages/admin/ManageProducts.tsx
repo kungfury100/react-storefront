@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Star, X } from "lucide-react"
 import {
   Table,
@@ -10,13 +10,15 @@ import {
 } from "@/components/ui/table"
 import { Button } from '@/components/ui/button'
 import AddProduct from '@/components/AddProduct'
+import type { Product } from '@/models/Product'
+import type { CartProduct } from '@/models/CartProduct'
 
 const PRODUCTS_API_URL = import.meta.env.VITE_DB_URL + "/products"
 const CART_STORAGE_KEY = "cart"
 
 function ManageProducts() {
   
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState<Product[]>([])
 
   useEffect(() => {
     fetch(PRODUCTS_API_URL)
@@ -24,19 +26,21 @@ function ManageProducts() {
       .then((json) => setProducts(json))
   }, [])
 
-  const deleteProduct = (id, index) => {
-    setProducts((previousProducts) =>
-      previousProducts.filter((_, productIndex) => productIndex !== index)
-    )
+  const deleteProduct = (id: number, index: number) => {
+    products.splice(index, 1);
+    setProducts(products.slice());
 
-    const cart = JSON.parse(localStorage.getItem(CART_STORAGE_KEY)) || []
-    const syncedCart = cart.filter((cartProduct) => String(cartProduct.id) !== String(id))
+    const cart: CartProduct[] = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || "[]")
+    const syncedCart = cart.filter((cartProduct) => cartProduct.product.id !== id)
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(syncedCart))
 
     fetch(PRODUCTS_API_URL + "/" + id, {
       method: "DELETE",
     })
   }
+
+  
+
 
   return (
     <div className="flex flex-col gap-6 pt-4">

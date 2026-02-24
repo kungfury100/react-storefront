@@ -1,7 +1,13 @@
 import { Button } from '@/components/ui/button'
+import type { Product } from '@/models/Product';
 import { ArrowDown, ArrowUp } from 'lucide-react';
+import type { Dispatch, SetStateAction } from 'react';
 
-function SortButtons(props) {
+interface SortButtonsInterface {
+  setProducts: Dispatch<SetStateAction<Product[]>>
+}
+
+function SortButtons(props: SortButtonsInterface  ) {
   const sortAZ = () => {
       props.setProducts((previousProducts) =>
         previousProducts.slice().sort((a, b) => a.title.localeCompare(b.title))

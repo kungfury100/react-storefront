@@ -1,5 +1,5 @@
 import AddCategory from '@/components/AddCategory'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { X } from "lucide-react"
 import {
   Table,
@@ -10,9 +10,10 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from '@/components/ui/button'
+import type { Category } from '@/models/Category'
 
 function ManageCategories() {
-  const [categories, setCategories] = useState([])
+  const [categories, setCategories] = useState<Category[]>([])
 
   useEffect(() => {
     fetch(import.meta.env.VITE_DB_URL + "/categories")
@@ -20,7 +21,7 @@ function ManageCategories() {
       .then(json => setCategories(json))
   }, [])
 
-  const deleteCategory = (id, index) => {
+  const deleteCategory = (id: number, index: number) => {
     categories.splice(index, 1)
     setCategories(categories.slice())
     fetch(import.meta.env.VITE_DB_URL + "/categories/" + id, {

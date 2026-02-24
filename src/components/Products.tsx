@@ -7,15 +7,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { getStoredProducts } from '@/pages/util/cart'
+import type { CartProduct } from '@/models/CartProduct'
+import type { Product } from '@/models/Product'
+import { getStoredCart } from '@/pages/util/cart'
 import { Check, ShoppingBag } from "lucide-react"
 import { Link } from 'react-router-dom'
 import { toast } from "sonner"
 
-function Product({products}) {
+function Products({products}: {products: Product[]}) {
 
-  const addToCart = (clickedProduct) => {
-    const cartLS = getStoredProducts(); // ostukorvis oleva toote ID     klikitud toote ID
+  const addToCart = (clickedProduct: Product) => {
+    const cartLS: CartProduct[] = getStoredCart(); // ostukorvis oleva toote ID     klikitud toote ID
     const found = cartLS.find(cartProduct => cartProduct.product.id === clickedProduct.id);
     if (found) {
        found.quantity++;
@@ -79,4 +81,4 @@ function Product({products}) {
   )
 }
 
-export default Product
+export default Products

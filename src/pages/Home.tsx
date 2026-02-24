@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Toaster } from "@/components/ui/sonner"
 import SortButtons from '@/components/SortButtons'
 import CategoryDropdown from '@/components/CategoryDropdown'
-import Product from '@/components/Product'
+import Products from '@/components/Products'
+import type { Product } from '@/models/Product'
 
 
 function Home() {
-  const [allProducts, setAllProducts] = useState([])
-  const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState<Product[]>([])
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
      fetch(import.meta.env.VITE_DB_URL + "/products")
@@ -25,7 +26,7 @@ function Home() {
       <CategoryDropdown dbProducts={allProducts} setProducts={setProducts}/>
       
       <div>{products.length} items currently in stock.</div>
-      <Product products={products} />
+      <Products products={products} />
       <Toaster position="top-center" />
     </div>
   )

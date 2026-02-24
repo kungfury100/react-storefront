@@ -1,17 +1,17 @@
-import React from 'react'
-import shops from "../data/shops.json"
+import shopsFromFile from "../data/shops.json"
 import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
-  TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import type { Shop } from "@/models/Shop"
 import 'leaflet/dist/leaflet.css'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 
 function Shops() {
+  const shops: Shop[] = shopsFromFile as Shop[];
+
   return (
     <div className="flex flex-col gap-4 pt-4">
       <h1 className="text-2xl font-semibold">Our shops</h1>

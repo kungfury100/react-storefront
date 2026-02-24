@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react"
-import { Link, Navigate, useParams } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { Navigate, useParams } from "react-router-dom"
 import {
   Table,
   TableBody,
@@ -19,15 +19,17 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { getStoredProducts } from '@/pages/util/cart'
+import { getStoredCart } from '@/pages/util/cart'
 import { toast } from "sonner"
 import { Toaster } from "@/components/ui/sonner"
+import type { Product } from "@/models/Product"
+import type { CartProduct } from "@/models/CartProduct"
 
 const PRODUCTS_API_URL = import.meta.env.VITE_DB_URL + "/products"
 
 function ProductDetails() {
   const { id } = useParams()
-  const [product, setProduct] = useState(null)
+  const [product, setProduct] = useState<Product>()
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
@@ -45,8 +47,8 @@ function ProductDetails() {
     return null
   }
 
-  const addToCart = (clickedProduct) => {
-    const cartLS = getStoredProducts(); // ostukorvis oleva toote ID     klikitud toote ID
+  const addToCart = (clickedProduct: Product) => {
+    const cartLS: CartProduct[] = getStoredCart();
     const found = cartLS.find(cartProduct => cartProduct.product.id === clickedProduct.id);
     if (found) {
         found.quantity++;
@@ -124,16 +126,6 @@ function ProductDetails() {
           </TableBody>
         </Table>
       </div>
-      
-     
-
-
-      
-      {/* // Võimalda tootele rating anda
-      // Võimalda toote kogu ratingu arvu
-      // toote rating = keskmine rating / arvuga -- uus rating
-      // uuesti rating arvutada
-      // kogu arvule +1 */}
       <Toaster position="top-center" />
     </div>
   )

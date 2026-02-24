@@ -1,0 +1,35 @@
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+import './index.css'
+import App from './App.js'
+
+const PRODUCTS_STORAGE_KEY = 'storefront-products'
+localStorage.removeItem(PRODUCTS_STORAGE_KEY)
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </StrictMode>,
+)
+
+//1. E 12.01 - react algus, reactis navigeerimine
+//2. K 14.01 - useState, dünaamiline väljakuvamine &&, function, dünaamiline CSS, ref, alamkomponendid
+//3. E 19.01 - kalkulaator, firebase
+//4. K 21.01 - arrays
+//5. E 26.01 - objektid, lisamine (ref/onChange)
+//6. E 02.02 - useParams(), muutmine
+//7. K 04.02 - darkmode/lightmode. keel. localStorage. ostukorv. localStorage array
+//8. E 09.02 - API päringud. makse.
+//9. K 11.02 - emaili saatmine. kaardirakendus. CSS library (Bootstrap + MUI + Tailwind). KOJU: uus inglise keelne veebipood.
+//10.E 16.02 - (uus ENG). andmebaas.
+//11.K 18.02 - kogus ostukorvis
+//12.T 24.02 - typescript
+//13.N 26.02 - reitingu skooriasi, Context + Redux
+//14.E 02.03 - emaili saatmine tellides, sisselogimine
+//15.K 04.03
+//16.E 09.03
+//17.K 11.03
+//18.K 25.03 poolik päev, lõpuprojekti esitlemine

@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input"
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
 import { Check } from "lucide-react"
+import type { Category } from '@/models/Category'
 
 const CATEGORIES_API_URL = import.meta.env.VITE_DB_URL + "/categories"
 
@@ -13,7 +14,7 @@ const INITIAL_CATEGORY = {
 }
 
 interface AddCategoryInterface {
-  updateCategories: (category: {}) => void
+  updateCategories: (category: Category[]) => void
 }
 
 function AddCategory(props: AddCategoryInterface) {

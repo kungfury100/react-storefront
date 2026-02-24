@@ -9,6 +9,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
+import type { CartProduct } from '@/models/CartProduct'
 
 
 export default function Navbar() {
@@ -16,8 +17,8 @@ export default function Navbar() {
 
   const getCartCount = () => {
     try {
-      const storedCart = JSON.parse(localStorage.getItem("cart")) || []
-      return storedCart.reduce((sum, cartProduct) => {
+      const storedCart = JSON.parse(localStorage.getItem("cart") || "[]")
+      return storedCart.reduce((sum: number, cartProduct: CartProduct) => {
         const quantity = Number(cartProduct?.quantity ?? 1)
         return sum + (Number.isFinite(quantity) ? quantity : 0)
       }, 0)

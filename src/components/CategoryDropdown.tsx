@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Select,
   SelectContent,
@@ -7,11 +7,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import type { Category } from '@/models/Category';
+import type { Product } from '@/models/Product';
 
-function CategoryDropdown({dbProducts, setProducts}) {
+interface CategoryDropdownInterface {
+  dbProducts: Product[],
+  setProducts: (products: Product[]) => void
+}
+
+function CategoryDropdown({dbProducts, setProducts}: CategoryDropdownInterface) {
   const [selectedCategory, setSelectedCategory] = useState("all")
   // const categories = [...new Set(dbProducts.map((product) => product.category))]
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
       fetch(import.meta.env.VITE_DB_URL + "/categories")
@@ -19,15 +26,15 @@ function CategoryDropdown({dbProducts, setProducts}) {
         .then(json => setCategories(json))
     }, [])
 
-  const filterByCategory = (category) => {
-    setSelectedCategory(category)
+  const filterByCategory = (categoryName: string) => {
+    setSelectedCategory(categoryName)
 
-    if (category === "all") {
+    if (categoryName === "all") {
       setProducts(dbProducts)
       return
     }
 
-    setProducts(dbProducts.filter((product) => product.category === category))
+    setProducts(dbProducts.filter((product) => product.category === categoryName))
   }
 
 

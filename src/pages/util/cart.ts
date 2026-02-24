@@ -1,10 +1,10 @@
-export const getStoredProducts = () => {
+export const getStoredCart = () => {
   const storedProducts = localStorage.getItem("cart")
   if (!storedProducts) {
     return []
   }
 
-  try {
+  try { 
     return JSON.parse(storedProducts)
   } catch {
     return []
