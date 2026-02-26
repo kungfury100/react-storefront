@@ -55,16 +55,8 @@ export default function Navbar() {
 
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
-              <Link to="/shops" className={navigationMenuTriggerStyle()}>
-                Shops
-              </Link>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <NavigationMenuLink asChild>
-              <Link to="/contact" className={navigationMenuTriggerStyle()}>
-                Contact
+              <Link to="/find-us" className={navigationMenuTriggerStyle()}>
+                Find us
               </Link>
             </NavigationMenuLink>
           </NavigationMenuItem>

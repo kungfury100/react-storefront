@@ -28,7 +28,7 @@ function NotFound() {
             <Link to="/"><CornerDownLeft /> Back home</Link>
           </Button>
           <Button variant="outline">
-            <Link to="/contact">Contact us</Link>
+            <Link to="/find-us">Contact us</Link>
           </Button>
         </EmptyContent>
       </Empty>

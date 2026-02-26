@@ -2,8 +2,7 @@ import './App.css';
 import { Route, Routes } from "react-router-dom";
 import Navbar from './components/Navbar'
 import Home from './pages/Home';
-import Contact from './pages/Contact';
-import Shops from './pages/Shops';
+import FindUs from './pages/FindUs';
 import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart';
 import AdminHome from './pages/admin/AdminHome';
@@ -22,8 +21,7 @@ function App() {
       <main className="layout-shell app-content">
         <Routes>
           <Route path="/" element={ <Home/> } />
-          <Route path="contact" element={ <Contact/> } />
-          <Route path="shops" element={ <Shops/>} />
+          <Route path="find-us" element={ <FindUs/> } />
           <Route path="cart" element={ <Cart/>} />
           <Route path="product/:id" element={ <ProductDetails/>} />
           <Route path="admin" element={ <AdminHome/>} />
