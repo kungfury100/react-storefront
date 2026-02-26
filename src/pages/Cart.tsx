@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { MinusIcon, PlusIcon, X } from 'lucide-react';
-import { getStoredCart } from './util/cart';
+import { getStoredCart, sum } from './util/cart';
 import {
   Table,
   TableBody,
@@ -11,9 +11,11 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import type { CartProduct } from '@/models/CartProduct';
+import { CartSumContext } from '@/context/CartSumContext';
 
 function Cart() {
   const [cart, setCart] = useState<CartProduct[]>(getStoredCart);
+  const {setCartSum} = useContext(CartSumContext);
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart))
@@ -21,39 +23,42 @@ function Cart() {
 
   const deleteProduct = (index: number) => {
     setCart((previousCart) => previousCart.filter((_, i) => i !== index))
+    setCartSum(sum(cart));
   }
 
   const decreaseQuantity = (index: number) => {
-    setCart((previousCart) => {
-      const item = previousCart[index]
-      if (!item) return previousCart
+    // setCart((previousCart) => {
+    //   const item = previousCart[index]
+    //   if (!item) return previousCart
 
-      if ((item.quantity ?? 0) <= 1) {
-        return previousCart.filter((_, i) => i !== index)
-      }
+    //   if ((item.quantity ?? 0) <= 1) {
+    //     return previousCart.filter((_, i) => i !== index)
+    //   }
 
-      return previousCart.map((cartProduct, i) =>
-        i === index ? { ...cartProduct, quantity: (cartProduct.quantity ?? 0) - 1 } : cartProduct
-      )
-    })
+    //   return previousCart.map((cartProduct, i) =>
+    //     i === index ? { ...cartProduct, quantity: (cartProduct.quantity ?? 0) - 1 } : cartProduct
+    //   )
+    // })
+    
+    cart[index].quantity--;
+    if (cart[index].quantity === 0) {
+      cart.splice(index,1);
+    }
+
+    setCart(cart.slice());
+    setCartSum(sum(cart));
   }
 
   const increaseQuantity = (index: number) => {
-    setCart((previousCart) =>
-      previousCart.map((cartProduct, i) =>
-        i === index ? { ...cartProduct, quantity: (cartProduct.quantity ?? 0) + 1 } : cartProduct
-      )
-    )
+    // setCart((previousCart) =>
+    //   previousCart.map((cartProduct, i) =>
+    //     i === index ? { ...cartProduct, quantity: (cartProduct.quantity ?? 0) + 1 } : cartProduct
+    //   )
+    // )
+    cart[index].quantity++;
+    setCart(cart.slice());
+    setCartSum(sum(cart));
   }
-
-  const sum = () => {
-    let sum = 0
-    cart.forEach((cartProduct) => {
-      sum = sum + Number(cartProduct.product.price) * cartProduct.quantity
-    })
-    return sum.toFixed(2)
-  }
-
 
   return (
     <div className="flex flex-col gap-6 pt-4">
@@ -64,7 +69,7 @@ function Cart() {
         <div className="flex justify-between">
           <div>
             <div>Unique items in cart: {cart.length} pcs</div>
-            <div>Total amount to be paid: {sum()}€</div>
+            <div>Total amount to be paid: {sum(cart).toFixed(2)}€</div>
           </div>
           <div>
             <Button variant="destructive" onClick={() => setCart([])}>Tühjenda ostukorv</Button>

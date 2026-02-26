@@ -75,7 +75,7 @@ function ManageProducts() {
                 <TableCell>
                   <div className="inline-flex items-center gap-1 whitespace-nowrap">
                     <Star className="h-4 w-4 text-primary" strokeWidth={2.25} />
-                    {product.rating} ({product.count})
+                    {product.rating.toFixed(1)}% ({product.count})
                   </div>
                 </TableCell>
                 <TableCell className="whitespace-normal break-all">{product.image}</TableCell>

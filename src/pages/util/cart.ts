@@ -1,3 +1,5 @@
+import type { CartProduct } from "@/models/CartProduct"
+
 export const getStoredCart = () => {
   const storedProducts = localStorage.getItem("cart")
   if (!storedProducts) {
@@ -9,4 +11,12 @@ export const getStoredCart = () => {
   } catch {
     return []
   }
+}
+
+export const sum = (cart: CartProduct[]) => {
+  let sum = 0
+  cart.forEach((cartProduct) => {
+    sum = sum + Number(cartProduct.product.price) * cartProduct.quantity
+  })
+  return sum
 }

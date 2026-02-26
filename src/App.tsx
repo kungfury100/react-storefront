@@ -12,6 +12,7 @@ import ManageShops from './pages/admin/ManageShops';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import NotFound from './pages/NotFound';
+import Profile from './pages/Profile';
 
 function App() {
 
@@ -30,6 +31,7 @@ function App() {
           <Route path="admin/manage-shops" element={ <ManageShops/>} />
           <Route path="login" element={ <Login/>} />
           <Route path="signup" element={ <SignUp/>} />
+          <Route path="profile" element={ <Profile/>} />
 
           <Route path="*" element={ <NotFound/>} />
         </Routes>

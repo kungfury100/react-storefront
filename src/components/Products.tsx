@@ -7,14 +7,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { CartSumContext } from '@/context/CartSumContext'
 import type { CartProduct } from '@/models/CartProduct'
 import type { Product } from '@/models/Product'
 import { getStoredCart } from '@/pages/util/cart'
 import { Check, ShoppingBag } from "lucide-react"
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from "sonner"
 
 function Products({products}: {products: Product[]}) {
+  const {cartSum, setCartSum} = useContext(CartSumContext);
 
   const addToCart = (clickedProduct: Product) => {
     const cartLS: CartProduct[] = getStoredCart(); // ostukorvis oleva toote ID     klikitud toote ID
@@ -25,6 +28,7 @@ function Products({products}: {products: Product[]}) {
       cartLS.push({product: clickedProduct, quantity: 1});
     }
     localStorage.setItem("cart", JSON.stringify(cartLS));
+    setCartSum(cartSum + clickedProduct.price);
   }
 
   return (
@@ -52,7 +56,7 @@ function Products({products}: {products: Product[]}) {
                 <div>{product.price}€</div>
               </TableCell>
               <TableCell className="w-1/5 align-middle">
-                <div>{product.rating}%</div>
+                <div>{product.rating.toFixed(1)}%</div>
               </TableCell>
               <TableCell className="w-1/5 align-middle">
                 <div className="justify-self-end flex gap-2">

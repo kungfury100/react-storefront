@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   NavigationMenu,
@@ -10,10 +10,16 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import type { CartProduct } from '@/models/CartProduct'
+import { CartSumContext } from '@/context/CartSumContext'
+import { AuthContext } from '@/context/AuthContext'
+import { Button } from './ui/button'
 
 
 export default function Navbar() {
-  const [cartCount, setCartCount] = useState(0)
+  const [cartCount, setCartCount] = useState(0);
+  const {cartSum} = useContext(CartSumContext);
+  const {isLoggedIn, handleLogout} = useContext(AuthContext);
+  // const navigate = useNavigate();
 
   const getCartCount = () => {
     try {
@@ -26,6 +32,11 @@ export default function Navbar() {
       return 0
     }
   }
+
+  // const logout = () => {
+  //   setIsLoggedIn(false);
+  //   navigate("/")
+  // }
 
   useEffect(() => {
     const syncCartCount = () => setCartCount(getCartCount())
@@ -64,7 +75,7 @@ export default function Navbar() {
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
               <Link to="/cart" className={navigationMenuTriggerStyle()}>
-                Cart ({cartCount})
+                Cart ({cartCount}) {cartSum.toFixed(2)}€
               </Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
@@ -103,21 +114,41 @@ export default function Navbar() {
               </NavigationMenuContent>
             </NavigationMenuItem>
 
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <Link to="/login" className={navigationMenuTriggerStyle()}>
-                  Login
-                </Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <Link to="/signup" className={navigationMenuTriggerStyle()}>
-                  Sign Up
-                </Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
+            {!isLoggedIn ?
+              <>
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <Link to="/login" className={navigationMenuTriggerStyle()}>
+                      Login
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <Link to="/signup" className={navigationMenuTriggerStyle()}>
+                      Sign Up
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              </> :
+              <>
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <Link to="/profile" className={navigationMenuTriggerStyle()}>
+                      Profile
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Button 
+                    onClick={handleLogout}
+                    className={navigationMenuTriggerStyle()}
+                  >
+                    Logout
+                  </Button>
+                </NavigationMenuItem>
+              </>
+            }
           </NavigationMenuList>
         </NavigationMenu>
       </div>

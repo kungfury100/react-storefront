@@ -27,10 +27,24 @@ import type { CartProduct } from "@/models/CartProduct"
 
 const PRODUCTS_API_URL = import.meta.env.VITE_DB_URL + "/products"
 
+const INITIAL_PRODUCT = {
+  id: 0,
+  title: "",
+  price: 0,
+  description: "",
+  category: "",
+  image: "",
+  active: false,
+  count: 0,
+  rating: 0
+}
+
+
 function ProductDetails() {
   const { id } = useParams()
-  const [product, setProduct] = useState<Product>()
+  const [product, setProduct] = useState<Product>(INITIAL_PRODUCT)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [score, setScore] = useState(33);
 
   useEffect(() => {
     fetch(`${PRODUCTS_API_URL}/${id}`)
@@ -38,14 +52,6 @@ function ProductDetails() {
       .then((data) => setProduct(data))
       .finally(() => setIsLoaded(true))
   }, [id])
-
-  if (isLoaded && (!product || !product.id)) {
-    return <Navigate to="/notfound" replace />
-  }
-
-  if (!product) {
-    return null
-  }
 
   const addToCart = (clickedProduct: Product) => {
     const cartLS: CartProduct[] = getStoredCart();
@@ -56,6 +62,28 @@ function ProductDetails() {
       cartLS.push({product: clickedProduct, quantity: 1});
     }
     localStorage.setItem("cart", JSON.stringify(cartLS));
+  }
+
+  const updateScore = async() => {
+    product.rating = (product.rating * product.count + score) / (product.count + 1);
+    product.count++;
+    await fetch(PRODUCTS_API_URL + "/" + product.id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(product),
+    })
+    .then(res => res.json())
+    .then(json => setProduct(json))
+  }
+
+  if (isLoaded && (!product || !product.id)) {
+    return <Navigate to="/notfound" replace />
+  }
+
+  if (!product) {
+    return null
   }
 
   return (
@@ -78,11 +106,15 @@ function ProductDetails() {
           src={product.image}
           alt={product.description}
         />
-        <div>
-          <div className="w-[180px]">
-            Give your score
-            <Slider defaultValue={[33]} max={100} step={1} />
-          </div>
+      </div>
+      <div className="w-[50%]">
+        Give your score
+        <div className="flex flex-row gap-4">
+          <Slider onValueChange={(value) => setScore(value[0])} defaultValue={[33]} max={100} step={1} />
+            <p>{score}</p>
+          <Button variant="secondary" onClick={updateScore}>
+            Insert
+          </Button>
         </div>
       </div>
       <div className="overflow-hidden rounded-md border">
@@ -102,7 +134,7 @@ function ProductDetails() {
                 {product.price}€
               </TableCell>
               <TableCell>
-                {product.rating}% ({product.count})
+                {product.rating.toFixed(1)}% ({product.count})
               </TableCell>
               <TableCell>
                 {product.id}

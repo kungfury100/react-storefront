@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.js'
+import { CartSumContextProvider } from './context/CartSumContext.js'
+import { AuthContextProvider } from './context/AuthContext.js'
 
 const PRODUCTS_STORAGE_KEY = 'storefront-products'
 localStorage.removeItem(PRODUCTS_STORAGE_KEY)
@@ -10,7 +12,11 @@ localStorage.removeItem(PRODUCTS_STORAGE_KEY)
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <CartSumContextProvider>
+        <AuthContextProvider>
+          <App />
+        </AuthContextProvider>
+      </CartSumContextProvider>
     </BrowserRouter>
   </StrictMode>,
 )
@@ -27,8 +33,8 @@ createRoot(document.getElementById('root')!).render(
 //10.E 16.02 - (uus ENG). andmebaas.
 //11.K 18.02 - kogus ostukorvis
 //12.T 24.02 - typescript
-//13.N 26.02 - reitingu skooriasi, Context + Redux
-//14.E 02.03 - emaili saatmine tellides, sisselogimine
+//13.N 26.02 - reitingu skooriasi, Context
+//14.E 02.03 - Redux, emaili saatmine tellides, sisselogimine
 //15.K 04.03
 //16.E 09.03
 //17.K 11.03
