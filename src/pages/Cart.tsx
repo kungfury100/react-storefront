@@ -14,6 +14,8 @@ import type { CartProduct } from '@/models/CartProduct';
 import { CartSumContext } from '@/context/CartSumContext';
 import { decrement, decrementByAmount, increment, empty } from '../store/counterSlice'
 import { useAppDispatch } from '@/store/store';
+import emailjs from '@emailjs/browser';
+
 
 function Cart() {
   const [cart, setCart] = useState<CartProduct[]>(getStoredCart);
@@ -52,6 +54,29 @@ function Cart() {
     setCart(cart.slice());
     dispatch(increment());
   }
+
+  const sendEmail = () => {
+
+    const templateParams = {
+      name: 'James',
+      client_email: "karlsimmer@gmail.com",
+      cart_sum: sum(cart).toFixed(2),
+      order_products: cart.map(cp => cp.product.title + " | " + cp.product.price + " | " + cp.quantity)
+    };
+
+    emailjs
+      .send('service_nxwn5s5', 'template_vwj4cfb', templateParams, {
+        publicKey: 'pRMbCxIyIZkSdzecw',
+      })
+      .then(
+        () => {
+          console.log('SUCCESS!');
+        },
+        (error) => {
+          console.log('FAILED...', error.text);
+        },
+      );
+    };
 
   return (
     <div className="flex flex-col gap-6 pt-4">
@@ -114,7 +139,8 @@ function Cart() {
         </Table>
       </div>
       }
-    
+      
+      <div><Button onClick={sendEmail}>Complete purchase</Button></div>
       
     </div>
   )

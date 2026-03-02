@@ -41,7 +41,7 @@ createRoot(document.getElementById('root')!).render(
 //11.K 18.02 - kogus ostukorvis
 //12.T 24.02 - typescript
 //13.N 26.02 - reitingu skooriasi, Context
-//14.E 02.03 - Redux, emaili saatmine tellides
+//14.E 02.03 - Redux, emaili saatmine tellides, Dialog
 //15.K 04.03 - sisselogimine
 //16.E 09.03
 //17.K 11.03

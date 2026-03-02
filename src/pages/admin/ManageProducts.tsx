@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Star, X } from "lucide-react"
+import { Star } from "lucide-react"
 import {
   Table,
   TableBody,
@@ -8,10 +8,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Button } from '@/components/ui/button'
 import AddProduct from '@/components/AddProduct'
 import type { Product } from '@/models/Product'
 import type { CartProduct } from '@/models/CartProduct'
+import ConfirmationModal from '@/components/ConfirmationModal'
+
 
 const PRODUCTS_API_URL = import.meta.env.VITE_DB_URL + "/products"
 const CART_STORAGE_KEY = "cart"
@@ -64,9 +65,7 @@ function ManageProducts() {
             {products.map((product, index) => (
               <TableRow key={product.id}>
                 <TableCell className="whitespace-normal break-all">
-                  <Button onClick={() => deleteProduct(product.id, index)} size="icon" variant="outline" aria-label="Submit">
-                    <X />
-                  </Button>
+                  <ConfirmationModal onConfirm={deleteProduct} deletedObjectId={product.id} index={index}/>
                 </TableCell>
                 <TableCell>{product.id}</TableCell>
                 <TableCell className="whitespace-normal break-words">{product.title}</TableCell>
@@ -84,6 +83,7 @@ function ManageProducts() {
           </TableBody>
         </Table>
       </div>
+      
     </div>
   )
 }
