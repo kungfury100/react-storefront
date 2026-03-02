@@ -12,52 +12,45 @@ import {
 } from "@/components/ui/table"
 import type { CartProduct } from '@/models/CartProduct';
 import { CartSumContext } from '@/context/CartSumContext';
+import { decrement, decrementByAmount, increment, empty } from '../store/counterSlice'
+import { useAppDispatch } from '@/store/store';
 
 function Cart() {
   const [cart, setCart] = useState<CartProduct[]>(getStoredCart);
-  const {setCartSum} = useContext(CartSumContext);
+  const {increaseCartSum, decreaseCartSum, zeroCartSum} = useContext(CartSumContext);
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart))
   }, [cart])
 
+  const emptyCart = () => {
+    setCart([]);
+    zeroCartSum();
+    dispatch(empty());
+  }
+
   const deleteProduct = (index: number) => {
+    decreaseCartSum(cart[index].product.price * cart[index].quantity);
     setCart((previousCart) => previousCart.filter((_, i) => i !== index))
-    setCartSum(sum(cart));
+    dispatch(decrementByAmount(cart[index].quantity));
   }
 
   const decreaseQuantity = (index: number) => {
-    // setCart((previousCart) => {
-    //   const item = previousCart[index]
-    //   if (!item) return previousCart
-
-    //   if ((item.quantity ?? 0) <= 1) {
-    //     return previousCart.filter((_, i) => i !== index)
-    //   }
-
-    //   return previousCart.map((cartProduct, i) =>
-    //     i === index ? { ...cartProduct, quantity: (cartProduct.quantity ?? 0) - 1 } : cartProduct
-    //   )
-    // })
-    
+    decreaseCartSum(cart[index].product.price);
     cart[index].quantity--;
     if (cart[index].quantity === 0) {
       cart.splice(index,1);
     }
-
     setCart(cart.slice());
-    setCartSum(sum(cart));
+    dispatch(decrement());
   }
 
   const increaseQuantity = (index: number) => {
-    // setCart((previousCart) =>
-    //   previousCart.map((cartProduct, i) =>
-    //     i === index ? { ...cartProduct, quantity: (cartProduct.quantity ?? 0) + 1 } : cartProduct
-    //   )
-    // )
+    increaseCartSum(cart[index].product.price);
     cart[index].quantity++;
     setCart(cart.slice());
-    setCartSum(sum(cart));
+    dispatch(increment());
   }
 
   return (
@@ -72,7 +65,7 @@ function Cart() {
             <div>Total amount to be paid: {sum(cart).toFixed(2)}€</div>
           </div>
           <div>
-            <Button variant="destructive" onClick={() => setCart([])}>Tühjenda ostukorv</Button>
+            <Button variant="destructive" onClick={emptyCart}>Tühjenda ostukorv</Button>
           </div>
         </div>
       }
@@ -105,7 +98,7 @@ function Cart() {
                       <MinusIcon />
                     </Button>
                     {cp.quantity}
-                    <Button size="icon-xs" variant="outline" onClick={() => increaseQuantity(index)}>
+                    <Button size="icon-xs" variant="outline"onClick={() => increaseQuantity(index)}>
                       <PlusIcon />
                     </Button>
                   </div>

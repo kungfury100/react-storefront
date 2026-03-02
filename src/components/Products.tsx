@@ -13,11 +13,14 @@ import type { Product } from '@/models/Product'
 import { getStoredCart } from '@/pages/util/cart'
 import { Check, ShoppingBag } from "lucide-react"
 import { useContext } from 'react'
+import { increment } from '../store/counterSlice'
 import { Link } from 'react-router-dom'
 import { toast } from "sonner"
+import { useAppDispatch } from '@/store/store'
 
 function Products({products}: {products: Product[]}) {
-  const {cartSum, setCartSum} = useContext(CartSumContext);
+  const {increaseCartSum} = useContext(CartSumContext);
+  const dispatch = useAppDispatch();
 
   const addToCart = (clickedProduct: Product) => {
     const cartLS: CartProduct[] = getStoredCart(); // ostukorvis oleva toote ID     klikitud toote ID
@@ -28,7 +31,8 @@ function Products({products}: {products: Product[]}) {
       cartLS.push({product: clickedProduct, quantity: 1});
     }
     localStorage.setItem("cart", JSON.stringify(cartLS));
-    setCartSum(cartSum + clickedProduct.price);
+    increaseCartSum(clickedProduct.price);
+    dispatch(increment());
   }
 
   return (

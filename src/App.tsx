@@ -13,11 +13,14 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import NotFound from './pages/NotFound';
 import Profile from './pages/Profile';
+import { useContext } from 'react';
+import { DarkModeContext } from './context/DarkModeContext';
 
 function App() {
+  const {isDark} = useContext(DarkModeContext);
 
   return (
-    <div className="App">
+    <div className={isDark ? "dark-mode" : "light-mode"}>
       <Navbar />
       <main className="layout-shell app-content">
         <Routes>

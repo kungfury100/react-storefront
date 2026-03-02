@@ -5,6 +5,9 @@ import './index.css'
 import App from './App.js'
 import { CartSumContextProvider } from './context/CartSumContext.js'
 import { AuthContextProvider } from './context/AuthContext.js'
+import { DarkModeContextProvider } from './context/DarkModeContext.js'
+import { store } from './store/store.ts'
+import { Provider } from 'react-redux'
 
 const PRODUCTS_STORAGE_KEY = 'storefront-products'
 localStorage.removeItem(PRODUCTS_STORAGE_KEY)
@@ -14,7 +17,11 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <CartSumContextProvider>
         <AuthContextProvider>
-          <App />
+          <DarkModeContextProvider>
+            <Provider store={store}>
+              <App />
+            </Provider>
+          </DarkModeContextProvider>
         </AuthContextProvider>
       </CartSumContextProvider>
     </BrowserRouter>
@@ -34,8 +41,8 @@ createRoot(document.getElementById('root')!).render(
 //11.K 18.02 - kogus ostukorvis
 //12.T 24.02 - typescript
 //13.N 26.02 - reitingu skooriasi, Context
-//14.E 02.03 - Redux, emaili saatmine tellides, sisselogimine
-//15.K 04.03
+//14.E 02.03 - Redux, emaili saatmine tellides
+//15.K 04.03 - sisselogimine
 //16.E 09.03
 //17.K 11.03
 //18.K 25.03 poolik päev, lõpuprojekti esitlemine
