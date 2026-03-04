@@ -52,7 +52,7 @@ export function useCart() {
       name: 'James',
       client_email: "karlsimmer@gmail.com",
       cart_sum: sum(cart).toFixed(2),
-      order_products: cart.map(cp => cp.product.title + " | " + cp.product.price + " | " + cp.quantity)
+      order_products: cart.map((cp: typeof cart[number]) => cp.product.title + " | " + cp.product.price + " | " + cp.quantity)
     }
 
     emailjs
