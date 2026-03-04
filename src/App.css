@@ -68,3 +68,27 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Prevent layout shift when dialog opens */
+body {
+  overflow-y: scroll; /* Always show scrollbar space */
+}
+
+[data-slot="sheet-content"][data-state="open"] {
+  overflow: hidden;
+}
+
+/* When sheet is open, hide body scroll but keep space */
+html[data-scroll-locked] {
+  overflow: hidden;
+  padding-right: var(--scrollbar-width, 0px);
+}
+
+/* Prevent layout shift when dialog opens */
+body {
+  overflow-y: scroll;
+}
+
+html[data-scroll-locked] {
+  overflow: hidden;
+}

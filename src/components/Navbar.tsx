@@ -14,6 +14,19 @@ import { AuthContext } from '@/context/AuthContext'
 import { Button } from './ui/button'
 import { DarkModeContext } from '@/context/DarkModeContext'
 import { useAppSelector } from '@/store/store'
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import CartContent from './CartContent'
+import { useCart } from '@/hooks/useCart'
+import { Separator } from "@/components/ui/separator"
+
 
 
 export default function Navbar() {
@@ -22,6 +35,7 @@ export default function Navbar() {
   const {cartSum} = useContext(CartSumContext);
   const {isLoggedIn, handleLogout} = useContext(AuthContext);
   const {darkModeOn, darkModeOff} = useContext(DarkModeContext);
+  const { sendEmail, sum, cart } = useCart()
   // const navigate = useNavigate();
 
   // const getCartCount = () => {
@@ -59,6 +73,7 @@ export default function Navbar() {
       <div className="layout-shell py-2 flex items-center justify-between">
         <NavigationMenu viewport={false}>
           <NavigationMenuList>
+
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
               <Link to="/" className={navigationMenuTriggerStyle()}>
@@ -77,11 +92,34 @@ export default function Navbar() {
 
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
-              <Link to="/cart" className={navigationMenuTriggerStyle()}>
-                Cart ({cartCount}) {cartSum.toFixed(2)}€
-              </Link>
+              <Sheet>
+                <SheetTrigger asChild>
+                  <button className={navigationMenuTriggerStyle()}>
+                    Cart ({cartCount}) {cartSum.toFixed(2)}€
+                  </button>
+                </SheetTrigger>
+                <SheetContent className="sm:max-w-lg">
+                  <SheetHeader>
+                    <SheetTitle>Your cart</SheetTitle>
+                  </SheetHeader>
+                  <div className="px-4">
+                    <CartContent />
+                  </div>
+                  <SheetFooter className="flex gap-4">
+                    <Separator />
+                    <div className="flex justify-between items-end gap-4">
+                      <div>Cart total</div>
+                      <div className="font-bold text-xl">{sum(cart).toFixed(2)}€</div>
+                    </div>
+                    <SheetClose asChild>
+                      <Button size="lg" onClick={sendEmail}>Check out</Button>
+                    </SheetClose>
+                  </SheetFooter>
+                </SheetContent>
+              </Sheet>
             </NavigationMenuLink>
           </NavigationMenuItem>
+
           </NavigationMenuList>
         </NavigationMenu>
 

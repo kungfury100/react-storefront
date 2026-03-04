@@ -12,6 +12,24 @@ import { Provider } from 'react-redux'
 const PRODUCTS_STORAGE_KEY = 'storefront-products'
 localStorage.removeItem(PRODUCTS_STORAGE_KEY)
 
+// Calculate scrollbar width and set CSS variable
+const calculateScrollbarWidth = () => {
+  const outer = document.createElement('div')
+  outer.style.visibility = 'hidden'
+  outer.style.overflow = 'scroll'
+  document.body.appendChild(outer)
+  
+  const inner = document.createElement('div')
+  outer.appendChild(inner)
+  
+  const scrollbarWidth = outer.offsetWidth - inner.offsetWidth
+  document.body.removeChild(outer)
+  
+  document.documentElement.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`)
+}
+
+calculateScrollbarWidth()
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
