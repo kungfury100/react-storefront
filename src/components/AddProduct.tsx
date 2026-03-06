@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -13,11 +13,11 @@ import {
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
 import { Check } from "lucide-react"
-import type { Category } from '@/models/Category'
 import type { Product } from '@/models/Product'
+import { useFetchItems } from '@/hooks/useFetchItems'
+import type { Category } from '@/models/Category'
 
 const PRODUCTS_API_URL = import.meta.env.VITE_DB_URL + "/products"
-const CATEGORIES_API_URL = import.meta.env.VITE_DB_URL + "/categories"
 
 const INITIAL_PRODUCT = {
   title: "",
@@ -32,14 +32,18 @@ interface AddProductInterface {
 }
 
 function AddProduct(props: AddProductInterface) {
-  const [product, setProduct] = useState(INITIAL_PRODUCT)
-  const [categories, setCategories] = useState<Category[]>([])
+  const [product, setProduct] = useState(INITIAL_PRODUCT);
+  const categories = useFetchItems<Category>({endPoint: "/categories"});
 
-  useEffect(() => {
-    fetch(CATEGORIES_API_URL)
-      .then((response) => response.json())
-      .then((json) => setCategories(json))
-  }, [])
+
+  // const [categories, setCategories] = useState<Category[]>([])
+
+  // useEffect(() => {
+  //   fetch(CATEGORIES_API_URL)
+  //     .then((response) => response.json())
+  //     .then((json) => setCategories(json))
+  // }, [])
+  
 
   const updateField = (key: string, value: string) => {
     setProduct((previousProduct) => ({

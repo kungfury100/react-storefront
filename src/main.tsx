@@ -64,3 +64,5 @@ createRoot(document.getElementById('root')!).render(
 //16.E 09.03
 //17.K 11.03
 //18.K 25.03 poolik päev, lõpuprojekti esitlemine
+
+//ManageShops.tsx hook

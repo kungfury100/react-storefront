@@ -1,5 +1,3 @@
-import type { LatLngExpression } from "leaflet"
-
 export type Shop = {
   id: string;
   name: string;
@@ -9,4 +7,5 @@ export type Shop = {
   city: string;
   addressLatitude: number;
   addressLongitude: number;
+  googleMaps: string
 }

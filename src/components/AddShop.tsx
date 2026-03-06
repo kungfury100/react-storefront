@@ -1,7 +1,7 @@
 import { useState, type ChangeEvent } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import type { Shop } from "@/models/shop"
+import type { Shop } from "@/models/Shop"
 
 const SHOPS_API_URL = import.meta.env.VITE_DB_URL_2 + "/Shops"
 
@@ -17,6 +17,7 @@ const initialShop = {
   city: "",
   addressLatitude: "",
   addressLongitude: "",
+  googleMaps: ""
 }
 
 function AddShop({ updateShops }: AddShopProps) {
@@ -36,6 +37,7 @@ function AddShop({ updateShops }: AddShopProps) {
       city: shop.city,
       addressLatitude: Number(shop.addressLatitude),
       addressLongitude: Number(shop.addressLongitude),
+      googleMaps: shop.googleMaps
     }
 
     await fetch(SHOPS_API_URL, {
@@ -60,6 +62,7 @@ function AddShop({ updateShops }: AddShopProps) {
       <Input name="city" placeholder="City" value={shop.city} onChange={onChange} />
       <Input name="addressLatitude" type="number" step="0.0001" placeholder="Latitude" value={shop.addressLatitude} onChange={onChange} />
       <Input name="addressLongitude" type="number" step="0.0001" placeholder="Longitude" value={shop.addressLongitude} onChange={onChange} />
+      <Input name="googleMaps" type="url" placeholder="URL" value={shop.googleMaps} onChange={onChange} />
 
       <Button type="button" onClick={addShop}>
         Add shop

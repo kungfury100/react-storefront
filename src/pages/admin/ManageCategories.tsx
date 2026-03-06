@@ -11,15 +11,15 @@ import {
 } from "@/components/ui/table"
 import { Button } from '@/components/ui/button'
 import type { Category } from '@/models/Category'
+import { useFetchItems } from '@/hooks/useFetchItems'
 
 function ManageCategories() {
-  const [categories, setCategories] = useState<Category[]>([])
+  const [categories, setCategories] = useState<Category[]>([]);
+  const items = useFetchItems({endPoint: "/categories"})
 
   useEffect(() => {
-    fetch(import.meta.env.VITE_DB_URL + "/categories")
-      .then(res => res.json())
-      .then(json => setCategories(json))
-  }, [])
+    setCategories(items);
+  }, [items])
 
   const deleteCategory = (id: number, index: number) => {
     categories.splice(index, 1)

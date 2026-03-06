@@ -47,6 +47,7 @@ function ManageShops() {
               <TableHead>City</TableHead>
               <TableHead>Latitude</TableHead>
               <TableHead>Longitude</TableHead>
+              <TableHead>Google Maps</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -65,6 +66,7 @@ function ManageShops() {
                 <TableCell>{shop.city}</TableCell>
                 <TableCell>{shop.addressLatitude}</TableCell>
                 <TableCell>{shop.addressLongitude}</TableCell>
+                <TableCell>{shop.googleMaps}</TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -12,20 +12,19 @@ import AddProduct from '@/components/AddProduct'
 import type { Product } from '@/models/Product'
 import type { CartProduct } from '@/models/CartProduct'
 import ConfirmationModal from '@/components/ConfirmationModal'
+import { useFetchItems } from '@/hooks/useFetchItems'
 
 
 const PRODUCTS_API_URL = import.meta.env.VITE_DB_URL + "/products"
 const CART_STORAGE_KEY = "cart"
 
 function ManageProducts() {
-  
-  const [products, setProducts] = useState<Product[]>([])
+  const [products, setProducts] = useState<Product[]>([]);
+  const items = useFetchItems({endPoint: "/products"});
 
   useEffect(() => {
-    fetch(PRODUCTS_API_URL)
-      .then((res) => res.json())
-      .then((json) => setProducts(json))
-  }, [])
+    setProducts(items);
+  }, [items])
 
   const deleteProduct = (id: number, index: number) => {
     products.splice(index, 1);

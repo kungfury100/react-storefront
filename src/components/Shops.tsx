@@ -4,6 +4,7 @@ import {
   TableCell,
   TableRow,
 } from "@/components/ui/table"
+import { Button } from "@/components/ui/button"
 import type { Shop } from "@/models/Shop"
 import 'leaflet/dist/leaflet.css'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
@@ -27,6 +28,17 @@ function Shops({ shops }: ShopsProps) {
                     <h2 className="text-lg font-semibold">{shop.name}</h2>
                     <p>{shop.street} {shop.buildingNumber}</p>
                     <p>{shop.city}, {shop.countryCode}</p>
+                    <div>
+                      <Button asChild>
+                        <a
+                          href={shop.googleMaps}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Open in Google Maps
+                        </a>
+                      </Button>
+                    </div>
                   </div>
                 </TableCell>
                 <TableCell className="align-middle">

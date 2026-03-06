@@ -33,7 +33,7 @@ export default function Navbar() {
   // const [cartCount, setCartCount] = useState(0);
   const cartCount = useAppSelector(state => state.cartCount.value)
   const {cartSum} = useContext(CartSumContext);
-  const {isLoggedIn, handleLogout} = useContext(AuthContext);
+  const {user, isLoggedIn, handleLogout} = useContext(AuthContext);
   const {darkModeOn, darkModeOff} = useContext(DarkModeContext);
   const { sendEmail, sum, cart } = useCart()
   // const navigate = useNavigate();
@@ -123,8 +123,10 @@ export default function Navbar() {
           </NavigationMenuList>
         </NavigationMenu>
 
+       
         <NavigationMenu viewport={false}>
           <NavigationMenuList>
+            {isLoggedIn && user.role === "admin" &&
             <NavigationMenuItem>
               <NavigationMenuTrigger className="flex items-center gap-1">
                 Admin area
@@ -151,10 +153,15 @@ export default function Navbar() {
                       <Link to="/admin/manage-shops">Manage shops</Link>
                     </NavigationMenuLink>
                   </li>
+                  <li>
+                    <NavigationMenuLink asChild>
+                      <Link to="/admin/manage-users">Manage users</Link>
+                    </NavigationMenuLink>
+                  </li>
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
-
+            }
             {!isLoggedIn ?
               <>
                 <NavigationMenuItem>
@@ -188,6 +195,7 @@ export default function Navbar() {
                     Logout
                   </Button>
                 </NavigationMenuItem>
+                <span>Hi, {user.firstName}</span>
               </>
             }
             <NavigationMenuItem onClick={darkModeOn} className={navigationMenuTriggerStyle()}>

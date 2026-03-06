@@ -15,9 +15,11 @@ export const getStoredCart = () => {
 
 export const sum = (cart: CartProduct[]) => {
   let sum = 0
-  cart.forEach((cartProduct) => {
-    sum = sum + Number(cartProduct.product.price) * cartProduct.quantity
-  })
+   cart.forEach((cartProduct) => {
+     if (cartProduct && cartProduct.product && cartProduct.product.price) {
+       sum = sum + Number(cartProduct.product.price) * cartProduct.quantity
+     }
+   })
   return sum
 }
 
