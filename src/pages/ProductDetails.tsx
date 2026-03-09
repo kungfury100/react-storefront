@@ -24,6 +24,7 @@ import { toast } from "sonner"
 import { Toaster } from "@/components/ui/sonner"
 import type { Product } from "@/models/Product"
 import type { CartProduct } from "@/models/CartProduct"
+import ProductNotFound from "./ProductNotFound"
 
 const PRODUCTS_API_URL = import.meta.env.VITE_DB_URL + "/products"
 
@@ -79,7 +80,7 @@ function ProductDetails() {
   }
 
   if (isLoaded && (!product || !product.id)) {
-    return <Navigate to="/notfound" replace />
+    return <ProductNotFound />
   }
 
   if (!product) {

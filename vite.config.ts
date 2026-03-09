@@ -10,6 +10,7 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+  assetsInclude: ['**/*.lottie'],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

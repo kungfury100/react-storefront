@@ -18,6 +18,7 @@ function Shops({ shops }: ShopsProps) {
   return (
     <div className="flex flex-col gap-4 pt-4">
       <h1 className="text-2xl font-semibold">Find us</h1>
+      
       {shops.map((shop, index) => (
         <div key={`${shop.name}-${index}`} className="overflow-hidden rounded-md border">
           <Table>

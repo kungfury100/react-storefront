@@ -9,17 +9,32 @@ import {
 } from "@/components/ui/empty"
 import { Annoyed, CornerDownLeft } from "lucide-react"
 import { Link } from 'react-router-dom'
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import notFoundAnimation from "@/assets/404.lottie"
+
+const App = () => {
+  return (
+    <DotLottieReact
+      src={notFoundAnimation}
+      loop
+      autoplay
+      style={{ width: 160, height: 160 }}
+    />
+  );
+};
 
 
-function NotFound() {
+function ProductNotFound() {
+  
   return (
     <div>
+      <App />
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
             <Annoyed />
           </EmptyMedia>
-          <EmptyTitle>Page not found</EmptyTitle>
+          <EmptyTitle>Product not found</EmptyTitle>
           <EmptyDescription>
             The page you’re looking for doesn’t exist or may have been moved. Use one of the options below to continue.
           </EmptyDescription>
@@ -37,4 +52,4 @@ function NotFound() {
   )
 }
 
-export default NotFound
+export default ProductNotFound

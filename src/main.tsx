@@ -61,8 +61,8 @@ createRoot(document.getElementById('root')!).render(
 //13.N 26.02 - reitingu skooriasi, Context
 //14.E 02.03 - Redux, emaili saatmine tellides, Dialog
 //15.K 04.03 - sisselogimine
-//16.E 09.03
-//17.K 11.03
+//16.E 09.03 - lottie, rive, react-scroll
+//17.K 11.03 - backend
 //18.K 25.03 poolik päev, lõpuprojekti esitlemine
 
 //ManageShops.tsx hook

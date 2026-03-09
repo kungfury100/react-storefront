@@ -17,10 +17,12 @@ import { increment } from '../store/counterSlice'
 import { Link } from 'react-router-dom'
 import { toast } from "sonner"
 import { useAppDispatch } from '@/store/store'
+import { setCart } from '@/store/cartSlice'
 
 function Products({products}: {products: Product[]}) {
   const {increaseCartSum} = useContext(CartSumContext);
   const dispatch = useAppDispatch();
+  
 
   const addToCart = (clickedProduct: Product) => {
     const cartLS: CartProduct[] = getStoredCart(); // ostukorvis oleva toote ID     klikitud toote ID
@@ -33,6 +35,7 @@ function Products({products}: {products: Product[]}) {
     localStorage.setItem("cart", JSON.stringify(cartLS));
     increaseCartSum(clickedProduct.price);
     dispatch(increment());
+    dispatch(setCart(cartLS));
   }
 
   return (
