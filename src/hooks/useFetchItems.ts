@@ -13,7 +13,7 @@ export function useFetchItems<T>(props: UseFetchItemsInterface) {
     //   .then(json => setItems(json))
 
     const getItems = async() => {
-      const res = await fetch(import.meta.env.VITE_DB_URL + "/" + props.endPoint);
+      const res = await fetch(import.meta.env.VITE_DB_URL + props.endPoint);
       const json = await res.json();
       setItems(json);
     }

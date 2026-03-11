@@ -64,5 +64,6 @@ createRoot(document.getElementById('root')!).render(
 //16.E 09.03 - lottie, rive, react-scroll
 //17.K 11.03 - backend
 //18.K 25.03 poolik päev, lõpuprojekti esitlemine
+// backend, port: 5432
 
 //ManageShops.tsx hook

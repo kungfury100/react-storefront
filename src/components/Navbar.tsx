@@ -35,7 +35,7 @@ export default function Navbar() {
   const {cartSum} = useContext(CartSumContext);
   const {user, isLoggedIn, handleLogout} = useContext(AuthContext);
   const {darkModeOn, darkModeOff} = useContext(DarkModeContext);
-  const { sendEmail, sum, cart } = useCart()
+  const { checkout, sum, cart } = useCart()
   // const navigate = useNavigate();
 
   // const getCartCount = () => {
@@ -112,7 +112,7 @@ export default function Navbar() {
                       <div className="font-bold text-xl">{sum(cart).toFixed(2)}€</div>
                     </div>
                     <SheetClose asChild>
-                      <Button size="lg" onClick={sendEmail}>Check out</Button>
+                      <Button size="lg" onClick={checkout}>Check out</Button>
                     </SheetClose>
                   </SheetFooter>
                 </SheetContent>

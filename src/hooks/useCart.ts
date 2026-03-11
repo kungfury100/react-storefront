@@ -5,6 +5,8 @@ import { decrement, decrementByAmount, increment, empty } from '@/store/counterS
 import { useAppDispatch, useAppSelector } from '@/store/store'
 import { removeFromCart, updateQuantity, clearCart } from '@/store/cartSlice'
 import emailjs from '@emailjs/browser'
+import { Toaster } from "@/components/ui/sonner"
+import { toast } from "sonner"
 
 export function useCart() {
   const dispatch = useAppDispatch()
@@ -67,5 +69,19 @@ export function useCart() {
       })
   }
 
-  return { cart, emptyCart, deleteProduct, sendEmail, increaseQuantity, decreaseQuantity, sum }
+  const checkout = async() => {
+    sendEmail();
+    const res = await fetch(import.meta.env.VITE_DB_URL + "/orders", {
+      method: "POST",
+      body: JSON.stringify(cart),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    const json = await res.json();
+    alert(`Tellimus summas ${json.total}€, id ${json.id} meile edastatud`);
+    
+  }
+
+  return { cart, emptyCart, deleteProduct, checkout, increaseQuantity, decreaseQuantity, sum }
 }
